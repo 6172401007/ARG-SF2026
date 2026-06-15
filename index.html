@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Keamanan Laboratorium</title>
+    <style>
+        body { 
+            font-family: 'Courier New', Courier, monospace; 
+            background-color: #111; 
+            color: #0f0; 
+            text-align: center; 
+            padding-top: 10vh; 
+        }
+        .container {
+            border: 2px solid #0f0;
+            padding: 30px;
+            display: inline-block;
+            background: #000;
+            box-shadow: 0 0 15px #0f0;
+        }
+        input { 
+            padding: 10px; 
+            font-size: 16px; 
+            background: #222; 
+            color: #0f0; 
+            border: 1px solid #0f0; 
+            outline: none;
+        }
+        button { 
+            padding: 10px 20px; 
+            font-size: 16px; 
+            background: #0f0; 
+            color: #000; 
+            cursor: pointer; 
+            border: none; 
+            font-weight: bold; 
+            text-transform: uppercase;
+        }
+        button:hover { background: #0c0; }
+        #hasil { margin-top: 20px; font-size: 18px; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>[ TERMINAL PROTOKOL ANTIDOT ]</h2>
+        <p>Masukkan kode penawar untuk menetralisir racun:</p>
+        
+        <input type="password" id="inputSandi" placeholder="Ketik kode di sini...">
+        <button onclick="cekSandi()">Verifikasi</button>
+
+        <p id="hasil"></p>
+    </div>
+
+    <script>
+        // Ini adalah hasil Hash SHA-256 dari kata "racun123"
+        // Peserta yang melihat Inspect Element tidak akan tahu apa kata aslinya!
+        const KODE_RAHASIA_HASH = "8f2a6a1bfed3980a3794dc2ad8808bd957d19001b97eb1df7b1d428fa6eb4a05";
+
+        // Fungsi ajaib untuk mengubah teks biasa menjadi kode Hash
+        async function hashText(text) {
+            const msgBuffer = new TextEncoder().encode(text);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Fungsi yang berjalan saat tombol diklik
+        async function cekSandi() {
+            const inputUser = document.getElementById('inputSandi').value;
+            const pesanHasil = document.getElementById('hasil');
+            
+            if (inputUser === "") {
+                pesanHasil.innerText = "Masukkan kode terlebih dahulu!";
+                pesanHasil.style.color = "yellow";
+                return;
+            }
+
+            pesanHasil.innerText = "Memverifikasi struktur molekul...";
+            pesanHasil.style.color = "white";
+
+            // Mengubah inputan peserta menjadi Hash
+            const inputHash = await hashText(inputUser);
+
+            // Mencocokkan dengan Hash rahasia kita
+            setTimeout(() => {
+                if (inputHash === KODE_RAHASIA_HASH) {
+                    pesanHasil.innerText = "► AKSES DIBERIKAN: Penawar berhasil diaktifkan.";
+                    pesanHasil.style.color = "cyan";
+                } else {
+                    pesanHasil.innerText = "► AKSES DITOLAK: Kode salah. Kontaminasi berlanjut.";
+                    pesanHasil.style.color = "red";
+                }
+            }, 800); // Jeda sedikit agar terasa seperti mesin sungguhan
+        }
+    </script>
+
+</body>
+</html>
