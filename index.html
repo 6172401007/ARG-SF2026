@@ -3,134 +3,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistem Keamanan Laboratorium</title>
+    <title>Mushroom Kingdom - Royal Database</title>
     <style>
-        /* TEMA HACKER AWAL */
         body { 
             font-family: 'Courier New', Courier, monospace; 
-            background-color: #111; 
-            color: #0f0; 
+            background-color: #050505; 
+            color: #00ff00; 
             text-align: center; 
-            padding-top: 10vh; 
-            transition: background-color 1.5s ease, color 1.5s ease; /* Transisi halus saat berubah warna */
+            padding-top: 5vh; 
+            transition: background-color 1s ease, color 1s ease;
         }
         .container {
-            border: 2px solid #0f0;
+            border: 2px solid #00ff00;
             padding: 30px;
             display: inline-block;
-            background: #000;
-            box-shadow: 0 0 15px #0f0;
-            transition: opacity 1s ease;
+            background: #111;
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+            max-width: 700px;
+            transition: opacity 0.5s ease;
+        }
+        .warning-text {
+            color: #ff0000;
+            font-weight: bold;
+            font-size: 22px;
+            text-shadow: 0 0 5px #ff0000;
+            margin-bottom: 15px;
+            animation: blink 1s infinite;
         }
         input { 
             padding: 10px; 
             font-size: 16px; 
             background: #222; 
-            color: #0f0; 
-            border: 1px solid #0f0; 
+            color: #00ff00; 
+            border: 1px solid #00ff00; 
             outline: none;
             text-transform: uppercase;
+            width: 70%;
+            margin-bottom: 15px;
+            text-align: center;
         }
         button { 
-            padding: 10px 20px; 
+            padding: 10px 25px; 
             font-size: 16px; 
-            background: #0f0; 
+            background: #00ff00; 
             color: #000; 
             cursor: pointer; 
             border: none; 
             font-weight: bold; 
             text-transform: uppercase;
         }
-        button:hover { background: #0c0; }
-        #hasil { margin-top: 20px; font-size: 18px; font-weight: bold; }
+        button:hover { background: #00cc00; }
+        #hasil { margin-top: 20px; font-size: 16px; font-weight: bold; }
 
-        /* KELAS TAMBAHAN UNTUK MODE ROMANTIS */
-        .romantic-mode {
-            background-color: #ffe6e6 !important; /* Warna pink muda */
-            color: #d60053 !important; /* Warna teks merah/pink tua */
-            font-family: 'Arial', sans-serif !important;
-        }
-        .romantic-text {
-            font-size: 50px;
-            font-weight: bold;
-            text-shadow: 2px 2px 10px rgba(214, 0, 83, 0.5);
-            animation: fadeInHeart 2s ease-in-out forwards;
-            opacity: 0;
-            margin-top: 15vh;
-        }
-        .romantic-subtext {
+        /* TRIK TEKS TERSEMBUNYI (BLACK-ON-BLACK) */
+        .hidden-key {
+            color: #111; /* Warna teks disamakan dengan warna background box */
             font-size: 20px;
-            margin-top: 10px;
-            animation: fadeInHeart 3s ease-in-out forwards;
-            opacity: 0;
+            margin: 30px 0;
+            cursor: text;
+        }
+        /* Saat peserta mem-blok teks (highlight), warnanya akan muncul */
+        .hidden-key::selection {
+            background: #00ff00;
+            color: #000;
         }
 
-        /* Animasi Muncul Halus */
-        @keyframes fadeInHeart {
-            0% { opacity: 0; transform: scale(0.8); }
-            100% { opacity: 1; transform: scale(1); }
+        /* TEMA FAKTUR INVOICE */
+        .invoice-mode {
+            background-color: #f4f4f4 !important; 
+            color: #000 !important; 
+            font-family: 'Arial', sans-serif !important;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .invoice-box {
+            background: #fff;
+            border: 2px dashed #333;
+            padding: 40px;
+            text-align: left;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 600px;
+            animation: slideDown 0.8s ease-out forwards;
+        }
+        .invoice-title {
+            font-size: 28px;
+            font-weight: bold;
+            border-bottom: 2px solid #000;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #d32f2f;
+        }
+
+        @keyframes blink { 50% { opacity: 0; } }
+        @keyframes slideDown {
+            0% { transform: translateY(-50px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
         }
     </style>
 </head>
 <body>
 
     <div class="container" id="mainBox">
-        <h2>[ TERMINAL PROTOKOL ANTIDOT ]</h2>
-        <p>Masukkan kode penawar untuk menetralisir racun:</p>
+        <div class="warning-text">!! ENCRYPTED FILE DETECTED !!</div>
+        <h2>[ DATABASE PABRIK RACUN BAWAH TANAH ]</h2>
+        <p>Log transaksi dikunci. Kode akses disembunyikan di dalam kegelapan layar ini.</p>
         
-        <input type="text" id="inputSandi" placeholder="Ketik kode di sini...">
-        <button onclick="cekSandi()">Verifikasi</button>
+        <div class="hidden-key">SAYA AKAN LAWAN</div>
+
+        <input type="text" id="inputSandi" placeholder="Masukkan Kode Akses...">
+        <br>
+        <button onclick="cekSandi()">Buka Surat Pemesanan</button>
 
         <p id="hasil"></p>
     </div>
 
     <script>
-        // Kata sandi rahasia
-        const KODE_RAHASIA = "I LOVE YOU RAISA";
+        // Kunci dekripsi telah diubah menjadi teks biasa
+        const KODE_RAHASIA = "SAYA AKAN LAWAN";
 
         function cekSandi() {
-            // Mengambil input dan mengubahnya menjadi huruf besar semua agar kebal typo huruf kapital
             const inputUser = document.getElementById('inputSandi').value.trim().toUpperCase();
             const pesanHasil = document.getElementById('hasil');
             const mainBox = document.getElementById('mainBox');
             
             if (inputUser === "") {
-                pesanHasil.innerText = "Masukkan kode terlebih dahulu!";
+                pesanHasil.innerText = "Error: Input kosong!";
                 pesanHasil.style.color = "yellow";
                 return;
             }
 
-            pesanHasil.innerText = "Memverifikasi struktur molekul...";
+            pesanHasil.innerText = "Mendekripsi data server...";
             pesanHasil.style.color = "white";
 
-            // Efek jeda loading palsu
             setTimeout(() => {
                 if (inputUser === KODE_RAHASIA) {
                     
-                    // JIKA BENAR: Hapus box hacker dan ubah tema
-                    mainBox.style.opacity = "0"; // Memudarkan box hijau
+                    mainBox.style.opacity = "0"; 
                     
                     setTimeout(() => {
-                        // Ubah tema ke Romantis
-                        document.body.className = "romantic-mode";
+                        document.body.className = "invoice-mode";
                         
-                        // Timpa seluruh isi body dengan pesan cinta
                         document.body.innerHTML = `
-                            <div class="romantic-text">
-                                I LOVE YOU TOO!! ❤️
-                            </div>
-                            <div class="romantic-subtext">
-                                (Sistem Keamanan Berhasil Diretas oleh Cinta)
+                            <div class="invoice-box">
+                                <div class="invoice-title">FAKTUR PEMESANAN #8842-X</div>
+                                <p><strong>Status:</strong> <span style="color:red;">LUNAS / TERKIRIM</span></p>
+                                <p><strong>Item:</strong> Ekstrak Jamur Kematian (Death Cap Extract) - Dosis Tinggi</p>
+                                <p><strong>Catatan Kurir:</strong> Pesanan diserahkan di area belakang kastil 6 jam sebelum penobatan.</p>
+                                <hr>
+                                <h3>Data Biometrik Penerima (Terekam Kamera Kurir):</h3>
+                                <ul>
+                                    <li><strong>Jenis Kelamin:</strong> Wanita</li>
+                                    <li><strong>Golongan Darah (Deteksi DNA Sentuhan):</strong> B</li>
+                                    <li><strong>Estimasi Tinggi Badan:</strong> 165 cm</li>
+                                </ul>
+                                <p><em>*Pesan ini akan terhapus otomatis dalam 24 jam.</em></p>
                             </div>
                         `;
-                    }, 800); // Waktu tunggu box memudar sebelum ganti tema
+                    }, 500); 
 
                 } else {
-                    // JIKA SALAH
-                    pesanHasil.innerText = "► AKSES DITOLAK: Kode salah. Kontaminasi berlanjut.";
+                    pesanHasil.innerText = "► AKSES DITOLAK: Kode akses tidak valid.";
                     pesanHasil.style.color = "red";
                 }
-            }, 1000); // Jeda 1 detik agar terasa seperti mesin sungguhan
+            }, 1200); 
         }
     </script>
 
