@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistem Keamanan Laboratorium</title>
     <style>
+        /* TEMA HACKER AWAL */
         body { 
             font-family: 'Courier New', Courier, monospace; 
             background-color: #111; 
             color: #0f0; 
             text-align: center; 
             padding-top: 10vh; 
+            transition: background-color 1.5s ease, color 1.5s ease; /* Transisi halus saat berubah warna */
         }
         .container {
             border: 2px solid #0f0;
@@ -18,6 +20,7 @@
             display: inline-block;
             background: #000;
             box-shadow: 0 0 15px #0f0;
+            transition: opacity 1s ease;
         }
         input { 
             padding: 10px; 
@@ -26,6 +29,7 @@
             color: #0f0; 
             border: 1px solid #0f0; 
             outline: none;
+            text-transform: uppercase;
         }
         button { 
             padding: 10px 20px; 
@@ -39,37 +43,56 @@
         }
         button:hover { background: #0c0; }
         #hasil { margin-top: 20px; font-size: 18px; font-weight: bold; }
+
+        /* KELAS TAMBAHAN UNTUK MODE ROMANTIS */
+        .romantic-mode {
+            background-color: #ffe6e6 !important; /* Warna pink muda */
+            color: #d60053 !important; /* Warna teks merah/pink tua */
+            font-family: 'Arial', sans-serif !important;
+        }
+        .romantic-text {
+            font-size: 50px;
+            font-weight: bold;
+            text-shadow: 2px 2px 10px rgba(214, 0, 83, 0.5);
+            animation: fadeInHeart 2s ease-in-out forwards;
+            opacity: 0;
+            margin-top: 15vh;
+        }
+        .romantic-subtext {
+            font-size: 20px;
+            margin-top: 10px;
+            animation: fadeInHeart 3s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        /* Animasi Muncul Halus */
+        @keyframes fadeInHeart {
+            0% { opacity: 0; transform: scale(0.8); }
+            100% { opacity: 1; transform: scale(1); }
+        }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="container" id="mainBox">
         <h2>[ TERMINAL PROTOKOL ANTIDOT ]</h2>
         <p>Masukkan kode penawar untuk menetralisir racun:</p>
         
-        <input type="password" id="inputSandi" placeholder="Ketik kode di sini...">
+        <input type="text" id="inputSandi" placeholder="Ketik kode di sini...">
         <button onclick="cekSandi()">Verifikasi</button>
 
         <p id="hasil"></p>
     </div>
 
     <script>
-        // Ini adalah hasil Hash SHA-256 dari kata "racun123"
-        // Peserta yang melihat Inspect Element tidak akan tahu apa kata aslinya!
-        const KODE_RAHASIA_HASH = "8f2a6a1bfed3980a3794dc2ad8808bd957d19001b97eb1df7b1d428fa6eb4a05";
+        // Kata sandi rahasia
+        const KODE_RAHASIA = "I LOVE YOU RAISA";
 
-        // Fungsi ajaib untuk mengubah teks biasa menjadi kode Hash
-        async function hashText(text) {
-            const msgBuffer = new TextEncoder().encode(text);
-            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
-            const hashArray = Array.from(new Uint8Array(hashBuffer));
-            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-        }
-
-        // Fungsi yang berjalan saat tombol diklik
-        async function cekSandi() {
-            const inputUser = document.getElementById('inputSandi').value;
+        function cekSandi() {
+            // Mengambil input dan mengubahnya menjadi huruf besar semua agar kebal typo huruf kapital
+            const inputUser = document.getElementById('inputSandi').value.trim().toUpperCase();
             const pesanHasil = document.getElementById('hasil');
+            const mainBox = document.getElementById('mainBox');
             
             if (inputUser === "") {
                 pesanHasil.innerText = "Masukkan kode terlebih dahulu!";
@@ -80,19 +103,34 @@
             pesanHasil.innerText = "Memverifikasi struktur molekul...";
             pesanHasil.style.color = "white";
 
-            // Mengubah inputan peserta menjadi Hash
-            const inputHash = await hashText(inputUser);
-
-            // Mencocokkan dengan Hash rahasia kita
+            // Efek jeda loading palsu
             setTimeout(() => {
-                if (inputHash === KODE_RAHASIA_HASH) {
-                    pesanHasil.innerText = "► AKSES DIBERIKAN: Penawar berhasil diaktifkan.";
-                    pesanHasil.style.color = "cyan";
+                if (inputUser === KODE_RAHASIA) {
+                    
+                    // JIKA BENAR: Hapus box hacker dan ubah tema
+                    mainBox.style.opacity = "0"; // Memudarkan box hijau
+                    
+                    setTimeout(() => {
+                        // Ubah tema ke Romantis
+                        document.body.className = "romantic-mode";
+                        
+                        // Timpa seluruh isi body dengan pesan cinta
+                        document.body.innerHTML = `
+                            <div class="romantic-text">
+                                I LOVE YOU TOO!! ❤️
+                            </div>
+                            <div class="romantic-subtext">
+                                (Sistem Keamanan Berhasil Diretas oleh Cinta)
+                            </div>
+                        `;
+                    }, 800); // Waktu tunggu box memudar sebelum ganti tema
+
                 } else {
+                    // JIKA SALAH
                     pesanHasil.innerText = "► AKSES DITOLAK: Kode salah. Kontaminasi berlanjut.";
                     pesanHasil.style.color = "red";
                 }
-            }, 800); // Jeda sedikit agar terasa seperti mesin sungguhan
+            }, 1000); // Jeda 1 detik agar terasa seperti mesin sungguhan
         }
     </script>
 
