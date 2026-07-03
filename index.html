@@ -11,8 +11,11 @@
             color: #00ff00; 
             text-align: center; 
             padding-top: 5vh; 
-            transition: background-color 1s ease, color 1s ease;
+            margin: 0;
+            transition: all 0.5s ease;
         }
+        
+        /* TAHAP 1: KOTAK LOGIN */
         .container {
             border: 2px solid #00ff00;
             padding: 30px;
@@ -55,54 +58,46 @@
         button:hover { background: #00cc00; }
         #hasil { margin-top: 20px; font-size: 16px; font-weight: bold; }
 
-        /* TRIK TEKS TERSEMBUNYI (BLACK-ON-BLACK) */
+        /* KUNCI RAHASIA TAHAP 1 (Highlight Text) */
         .hidden-key {
-            color: #111; /* Warna teks disamakan dengan warna background box */
+            color: #111; 
             font-size: 20px;
             margin: 30px 0;
             cursor: text;
         }
-        /* Saat peserta mem-blok teks (highlight), warnanya akan muncul */
         .hidden-key::selection {
             background: #00ff00;
             color: #000;
         }
 
-        /* TEMA FAKTUR INVOICE */
-        .invoice-mode {
-            background-color: #f4f4f4 !important; 
-            color: #000 !important; 
-            font-family: 'Arial', sans-serif !important;
-            display: flex;
+        /* TAHAP 2: MODE ARG (GAMBAR HITAM) */
+        .arg-mode {
+            display: none; 
+            flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            margin: 0;
+            height: 90vh;
         }
-        .invoice-box {
-            background: #fff;
-            border: 2px dashed #333;
-            padding: 40px;
-            text-align: left;
-            box-shadow: 5px 5px 15px rgba(0,0,0,0.3);
-            width: 80%;
-            max-width: 600px;
-            animation: slideDown 0.8s ease-out forwards;
-        }
-        .invoice-title {
-            font-size: 28px;
-            font-weight: bold;
-            border-bottom: 2px solid #000;
-            padding-bottom: 10px;
+        .arg-header {
+            color: #ffcc00;
             margin-bottom: 20px;
-            color: #d32f2f;
+            font-size: 18px;
+            text-align: center;
+        }
+        
+        /* Container untuk Gambar SVG */
+        .image-container {
+            border: 1px solid #333;
+            background: #000;
+            box-shadow: 0 0 30px rgba(0,0,0,0.8);
+            /* Mematikan kemampuan highlight/blok kursor di dalam gambar */
+            -webkit-user-select: none; 
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none; 
         }
 
         @keyframes blink { 50% { opacity: 0; } }
-        @keyframes slideDown {
-            0% { transform: translateY(-50px); opacity: 0; }
-            100% { transform: translateY(0); opacity: 1; }
-        }
     </style>
 </head>
 <body>
@@ -116,19 +111,47 @@
 
         <input type="text" id="inputSandi" placeholder="Masukkan Kode Akses...">
         <br>
-        <button onclick="cekSandi()">Buka Surat Pemesanan</button>
+        <button onclick="cekSandi()">Ekstrak Gambar Faktur</button>
 
         <p id="hasil"></p>
     </div>
 
+    <div class="arg-mode" id="argBox">
+        <div class="arg-header">
+            <h3>[ FAKTUR #8842-X BERHASIL DIEKSTRAK ]</h3>
+            <p>WARNING: Resolusi gambar mengalami korupsi visual tingkat tinggi.<br>Hanya alat aksesibilitas layar atau pengaturan kontras tinggi yang dapat membacanya.</p>
+        </div>
+        
+        <div class="image-container">
+            <svg width="600" height="400" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Faktur Rahasia Terenkripsi">
+                
+                <title>Faktur Kematian</title>
+                <desc>Data Biometrik Pelanggan: Wanita, Golongan Darah B, Tinggi 165 CM. Identitas mengarah ke Daisy.</desc>
+                
+                <rect width="100%" height="100%" fill="#000000" />
+                
+                <text x="50%" y="30%" font-family="Courier New, monospace" font-size="22" fill="#030303" text-anchor="middle" font-weight="bold">
+                    [ DATA TRANSAKSI JAMUR KEMATIAN ]
+                </text>
+                <text x="50%" y="45%" font-family="Arial, sans-serif" font-size="18" fill="#030303" text-anchor="middle">
+                    WAKTU PENGIRIMAN: 5 JAM SEBELUM PENOBATAN
+                </text>
+                <text x="50%" y="65%" font-family="Arial, sans-serif" font-size="20" fill="#030303" text-anchor="middle" font-weight="bold">
+                    PELANGGAN: WANITA | GOL: B | 165 CM
+                </text>
+                
+            </svg>
+        </div>
+    </div>
+
     <script>
-        // Kunci dekripsi telah diubah menjadi teks biasa
         const KODE_RAHASIA = "SAYA AKAN LAWAN";
 
         function cekSandi() {
             const inputUser = document.getElementById('inputSandi').value.trim().toUpperCase();
             const pesanHasil = document.getElementById('hasil');
             const mainBox = document.getElementById('mainBox');
+            const argBox = document.getElementById('argBox');
             
             if (inputUser === "") {
                 pesanHasil.innerText = "Error: Input kosong!";
@@ -136,33 +159,17 @@
                 return;
             }
 
-            pesanHasil.innerText = "Mendekripsi data server...";
+            pesanHasil.innerText = "Mengekstrak gambar...";
             pesanHasil.style.color = "white";
 
             setTimeout(() => {
                 if (inputUser === KODE_RAHASIA) {
                     
-                    mainBox.style.opacity = "0"; 
+                    // Hilangkan box tahap 1
+                    mainBox.style.display = "none"; 
                     
-                    setTimeout(() => {
-                        document.body.className = "invoice-mode";
-                        
-                        document.body.innerHTML = `
-                            <div class="invoice-box">
-                                <div class="invoice-title">FAKTUR PEMESANAN #8842-X</div>
-                                <p><strong>Status:</strong> <span style="color:red;">LUNAS / TERKIRIM</span></p>
-                                <p><strong>Item:</strong> Ekstrak Jamur Kematian (Death Cap Extract) - Dosis Tinggi</p>
-                                <p><strong>Catatan Kurir:</strong> Pesanan diserahkan di area belakang kastil 6 jam sebelum penobatan.</p>
-                                <hr>
-                                <h3>Data Biometrik Penerima (Terekam Kamera Kurir):</h3>
-                                <ul>
-                                    <li><strong>Jenis Kelamin:</strong> Wanita</li>
-                                    <li><strong>Golongan Darah (Deteksi DNA Sentuhan):</strong> B</li>
-                                </ul>
-                                <p><em>*Pesan ini akan terhapus otomatis dalam 24 jam.</em></p>
-                            </div>
-                        `;
-                    }, 500); 
+                    // Tampilkan box tahap 2 (Gambar Hitam)
+                    argBox.style.display = "flex"; 
 
                 } else {
                     pesanHasil.innerText = "► AKSES DITOLAK: Kode akses tidak valid.";
